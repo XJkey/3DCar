@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "three": "^0.148.0",
-    "vue": "^3.2.45"
+    "vue": "^3.2.45",
+    "vue-ellipse-progress": "^2.1.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",

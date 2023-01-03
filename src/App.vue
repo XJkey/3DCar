@@ -1,6 +1,7 @@
 <template>
   <div id="container" ref="container"></div>
-  <colorSelect :car="carMaterial"> </colorSelect>
+  <colorSelect :car="carMaterial" > </colorSelect>
+  <loading :tempo="progress"/>
 </template>
 
 <script setup>
@@ -9,9 +10,11 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import colorSelect from "./components/colorSelect.vue";
+import loading from "./components/loading.vue"
 
 import { ref, onMounted, reactive } from "vue";
 const container = ref(null);
+let progress = ref(0);
 const scene = new THREE.Scene();
 scene.background = new THREE.Color("#ccc");
 scene.environment = new THREE.Color("#ccc");
@@ -46,7 +49,28 @@ grid.material.opacity = 0.2;
 grid.material.transparent = true;
 scene.add(grid);
 
-const gltfLoader = new GLTFLoader();
+let event = {};
+// 单张纹理图的加载
+event.onLoad = function () {
+  console.log("图片加载完成");
+};
+event.onProgress = function (url, num, total) {
+  console.log("图片加载完成:", url);
+  console.log("图片加载进度:", num);
+  console.log("图片总数:", total);
+  progress.value = ((num / total) * 100).toFixed(2);
+  console.log("加载进度的百分比：", progress.value);
+  //div.innerHTML = value;
+};
+event.onError = function (e) {
+  console.log("图片加载出现错误");
+  console.log(e);
+};
+
+// 设置加载管理器
+const loadingManager = new THREE.LoadingManager(event.onLoad, event.onProgress, event.onError);
+
+const gltfLoader = new GLTFLoader(loadingManager);
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath("./draco/gltf/");
 gltfLoader.setDRACOLoader(dracoLoader);
