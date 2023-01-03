@@ -48,7 +48,7 @@ scene.add(grid);
 
 const gltfLoader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("/draco/gltf/");
+dracoLoader.setDecoderPath("./draco/gltf/");
 gltfLoader.setDRACOLoader(dracoLoader);
 let wheels = [];
 let carBody, fontCar, hoodCar, glassCar;
@@ -91,7 +91,7 @@ const glassMaterial = new THREE.MeshPhysicalMaterial({
 });
 let carMaterial = [bodyMaterial, fontMaterial, hoodMaterial, wheelsMaterial];
 
-gltfLoader.load("/model/bmw01.glb", (gltf) => {
+gltfLoader.load("./model/bmw01.glb", (gltf) => {
   let bmw = gltf.scene;
   bmw.scale.set(2, 2, 2);
   //console.log(bmw);
